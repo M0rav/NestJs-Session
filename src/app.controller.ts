@@ -1,8 +1,5 @@
-import {
-  Controller,
-  Get,
-  Render,
-} from '@nestjs/common';
+import { Controller, Get, Render, Req, Session } from '@nestjs/common';
+import { Request } from 'express';
 import { AppService } from './app.service';
 import db from './db';
 
@@ -12,7 +9,12 @@ export class AppController {
 
   @Get()
   @Render('index')
-  index() {
-    return { message: 'Welcome to the homepage' };
+  index(@Session() session: Record<string, any>) {
+    if (!session.dobas) {
+      session.dobas = Math.floor(Math.random() * 100);
+    }
+    return {
+      dobas: 'A szam : ' + session.dobas,
+    };
   }
 }
